@@ -4,9 +4,17 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.14"
 dependencies = [
+    "alembic>=1.18.4",
+    "bcrypt>=4.0.1,<5",
     "fastapi>=0.129.0",
     "httpx>=0.28.1",
+    "passlib[bcrypt]>=1.7.4",
+    "psycopg2-binary>=2.9.11",
+    "pydantic-settings>=2.13.1",
+    "pydantic[email]>=2.12.5",
     "pytest>=9.0.2",
+    "python-jose>=3.5.0",
+    "sqlalchemy>=2.0.46",
     "uvicorn>=0.41.0",
 ]
 

@@ -214,3 +214,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+migrations/__pycache__/
+migrations/*.pyc
+migrations/versions/__pycache__/
+migrations/versions/*.pyc
