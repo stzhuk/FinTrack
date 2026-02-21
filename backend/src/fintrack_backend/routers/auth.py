@@ -9,11 +9,34 @@ from fintrack_backend.config import settings
 from fintrack_backend.crud.user import user_crud
 from fintrack_backend.database import get_db
 from fintrack_backend.schemas.auth import LoginRequest, RegisterRequest, TokenResponse
+from fintrack_backend.models.user import User
 from fintrack_backend.schemas.user import UserCreate
-from fintrack_backend.security.jwt import create_access_token, create_refresh_token
+from fintrack_backend.security.jwt import create_access_token, create_refresh_token, verify_token
 from fintrack_backend.security.password import verify_password
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+def _build_token_response(user: User, refresh_token: str | None = None) -> dict:
+    """Build a consistent auth payload for login/register/refresh endpoints."""
+    payload = {
+        "access_token": create_access_token(
+            data={"sub": user.id},
+            expires_delta=timedelta(
+                minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        ),
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+        },
+    }
+
+    if refresh_token is not None:
+        payload["refresh_token"] = refresh_token
+
+    return payload
 
 
 @router.post("/register", response_model=TokenResponse, status_code=201)
@@ -38,22 +61,9 @@ async def register(
         ),
     )
 
-    access_token = create_access_token(
-        data={"sub": user.id},
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
-    )
     refresh_token = create_refresh_token(data={"sub": user.id})
 
-    return {
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-        "token_type": "bearer",
-        "user": {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-        },
-    }
+    return _build_token_response(user, refresh_token=refresh_token)
 
 
 @router.post("/login", response_model=TokenResponse)
@@ -75,22 +85,9 @@ async def login(
             detail="Invalid credentials",
         )
 
-    access_token = create_access_token(
-        data={"sub": user.id},
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
-    )
     refresh_token = create_refresh_token(data={"sub": user.id})
 
-    return {
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-        "token_type": "bearer",
-        "user": {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-        },
-    }
+    return _build_token_response(user, refresh_token=refresh_token)
 
 
 @router.post("/refresh", response_model=TokenResponse)
@@ -99,8 +96,6 @@ async def refresh_token(
         db: Session = Depends(get_db)
 ):
     """Issue a new access token from a valid refresh token."""
-    from fintrack_backend.security.jwt import verify_token
-
     payload = verify_token(refresh_token)
     if not payload or payload.get("type") != "refresh":
         raise HTTPException(
@@ -117,17 +112,4 @@ async def refresh_token(
             detail="User not found"
         )
 
-    access_token = create_access_token(
-        data={"sub": user.id},
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
-    )
-
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-        "user": {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email
-        }
-    }
+    return _build_token_response(user)
