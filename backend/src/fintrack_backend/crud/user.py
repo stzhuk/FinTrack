@@ -27,6 +27,12 @@ class UserCRUD:
         return db_user
 
     @staticmethod
+    def get_all(db: Session) -> list[User]:
+        """Return all users."""
+        query = select(User)
+        return db.execute(query).scalars().all()
+
+    @staticmethod
     def get_by_email(db: Session, email: str) -> Optional[User]:
         """Return a user by email or `None` if it does not exist."""
         query = select(User).where(User.email == email)
