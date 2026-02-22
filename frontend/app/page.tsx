@@ -14,9 +14,7 @@ export default function Home() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-50">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="text-xl font-light tracking-tighter">
-            Леджер<span className="text-gray-300">.</span>
-          </div>
+          <div className="text-xl font-light tracking-tighter">FinTrack</div>
           <div className="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
             <a href="#features" className="hover:text-black transition-colors">
               Можливості
@@ -51,8 +49,9 @@ export default function Home() {
             на <span className="italic font-normal">прозорість.</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-500 font-light leading-relaxed">
-            Леджер — це не просто трекер витрат. Це ваш персональний фінансовий
-            архітектор, що використовує ШІ для досягнення ваших цілей.
+            FinTrack — це не просто трекер витрат. Це ваш персональний
+            фінансовий архітектор, що використовує ШІ для досягнення ваших
+            цілей.
           </p>
           <div className="pt-6">
             <button
@@ -171,13 +170,13 @@ export default function Home() {
             Менше цифр — більше сенсу.
           </h2>
           <p className="text-gray-400 text-lg md:text-xl font-light leading-relaxed italic">
-            "Ми віримо, що фінансова свобода починається з відмови від
+            &ldquo;Ми віримо, що фінансова свобода починається з відмови від
             складності. Леджер спроєктований так, щоб ви витрачали не більше 2
-            хвилин на день на облік, отримуючи 100% контролю."
+            хвилин на день на облік, отримуючи 100% контролю.&rdquo;
           </p>
           <div className="pt-6">
             <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500">
-              — Команда Леджера
+              — Команда FinTrack
             </span>
           </div>
         </div>
@@ -242,12 +241,10 @@ export default function Home() {
       <footer className="py-20 border-t border-gray-50 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2 space-y-6">
-            <div className="text-2xl font-light tracking-tighter">
-              Леджер<span className="text-gray-300">.</span>
-            </div>
+            <div className="text-2xl font-light tracking-tighter">FinTrack</div>
             <p className="max-w-xs text-sm text-gray-400 font-light leading-relaxed">
               Інструмент для усвідомленого керування фінансами. Розроблено з
-              любов'ю до деталей та приватності.
+              любов&apos;ю до деталей та приватності.
             </p>
           </div>
           <div className="space-y-4">
@@ -284,7 +281,7 @@ export default function Home() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-300 uppercase tracking-[0.2em]">
-          <span>© 2024 Леджер Фінанс. Всі права захищено.</span>
+          <span>© 2026 FinTrack. Всі права захищено.</span>
           <div className="mt-4 md:mt-0 flex space-x-6">
             <a href="#" className="hover:text-black transition-colors">
               Twitter

@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { authAPI } from "@/services/api";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,12 +21,14 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await authAPI.login({ email, password });
+      const response = await authAPI.register({ name, email, password });
       login(response.access_token, response.user);
       router.push("/dashboard");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Помилка входу. Спробуйте ще раз.",
+        err instanceof Error
+          ? err.message
+          : "Помилка реєстрації. Спробуйте ще раз.",
       );
     } finally {
       setLoading(false);
@@ -42,9 +45,11 @@ export default function LoginPage() {
           >
             FinTrack
           </Link>
-          <h1 className="text-3xl font-light tracking-tight">З поверненням</h1>
+          <h1 className="text-3xl font-light tracking-tight">
+            Створити аккаунт
+          </h1>
           <p className="text-sm text-gray-400 font-light">
-            Введіть свої дані для входу
+            Приєднуйтесь до 10,000+ користувачів
           </p>
         </div>
 
@@ -55,6 +60,15 @@ export default function LoginPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Ім'я"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            disabled={loading}
+            className="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-1 focus:ring-black transition-all text-sm disabled:opacity-50"
+          />
           <input
             type="email"
             placeholder="Email"
@@ -78,18 +92,18 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-black text-white py-4 rounded-2xl text-xs font-bold uppercase tracking-[0.2em] hover:bg-gray-800 transition-all active:scale-[0.98] shadow-lg shadow-black/5 disabled:opacity-50"
           >
-            {loading ? "Вхід..." : "Увійти"}
+            {loading ? "Реєстрація..." : "Зареєструватися"}
           </button>
         </form>
 
         <div className="text-center pt-4">
           <p className="text-xs text-gray-400 font-light">
-            Немає аккаунту?{" "}
+            Вже маєте аккаунт?{" "}
             <Link
-              href="/register"
+              href="/login"
               className="text-black font-medium hover:underline"
             >
-              Створити зараз
+              Увійти
             </Link>
           </p>
         </div>

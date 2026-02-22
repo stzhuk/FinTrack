@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -9,8 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "FinTrack",
-  description: "Description of your app",
-  viewport: "width=device-width, initial-scale=1",
+  description: "FinTrack - ваш особистий фінансовий помічник",
 };
 
 export default function RootLayout({
@@ -20,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uk">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }
