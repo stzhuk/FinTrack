@@ -1,8 +1,9 @@
 .PHONY: help build up down restart logs logs-backend logs-frontend logs-db logs-redis migrate test clean \
 		shell-backend shell-db shell-redis ps health restart-backend restart-frontend rebuild-backend \
-		rebuild-frontend prune status
+		rebuild-frontend prune status dev-build dev-up dev-down dev-restart dev-logs dev-ps dev-test
 
 COMPOSE ?= docker compose
+COMPOSE_DEV ?= docker compose -f docker-compose.yml -f docker-compose.dev.yml
 
 help:
 	@echo "FinTrack Docker Management"
@@ -29,6 +30,13 @@ help:
 	@echo "make rebuild-backend - Rebuild backend image without cache"
 	@echo "make rebuild-frontend - Rebuild frontend image without cache"
 	@echo "make prune           - Remove unused Docker objects"
+	@echo "make dev-build       - Build images for development mode"
+	@echo "make dev-up          - Start services in hot-reload mode"
+	@echo "make dev-down        - Stop development services"
+	@echo "make dev-restart     - Restart development services"
+	@echo "make dev-logs        - View logs in development mode"
+	@echo "make dev-ps          - Show development services status"
+	@echo "make dev-test        - Run backend tests in development stack"
 
 build:
 	$(COMPOSE) build
@@ -106,3 +114,28 @@ prune:
 
 status:
 	$(COMPOSE) ps
+
+dev-build:
+	$(COMPOSE_DEV) build
+
+dev-up:
+	$(COMPOSE_DEV) up -d
+	@echo "✅ Dev services are running (hot-reload enabled)!"
+	@echo "🌐 Frontend Dev: http://localhost:3000"
+	@echo "🔌 Backend Dev: http://localhost:8000"
+	@echo "📚 API Docs: http://localhost:8000/docs"
+
+dev-down:
+	$(COMPOSE_DEV) down
+
+dev-restart:
+	$(COMPOSE_DEV) restart
+
+dev-logs:
+	$(COMPOSE_DEV) logs -f
+
+dev-ps:
+	$(COMPOSE_DEV) ps
+
+dev-test:
+	$(COMPOSE_DEV) exec backend pytest -v -o cache_dir=/tmp/.pytest_cache
