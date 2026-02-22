@@ -41,12 +41,3 @@ async def update_current_user(
             detail="User not found",
         )
     return user
-
-
-@router.get("/all", response_model=list[UserResponse])
-async def get_all_users(
-    db: Session = Depends(get_db)
-):
-    """Return a list of all users."""
-    users = user_crud.get_all(db)
-    return users
